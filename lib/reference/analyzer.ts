@@ -63,7 +63,7 @@ export function generatePromptFromReference(
   userPrompt: string = ''
 ): { prompt: string; settings: GenerationRequest } {
   const constraints: string[] = [];
-  const settings: GenerationRequest = {};
+  const settings: Partial<GenerationRequest> = {};
 
   // BPM matching
   if (similarity >= 0.7) {
@@ -110,7 +110,7 @@ export function generatePromptFromReference(
 
   return {
     prompt: fullPrompt,
-    settings,
+    settings: settings as GenerationRequest,
   };
 }
 

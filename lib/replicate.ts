@@ -46,7 +46,8 @@ export async function generateMusic(options: MusicGenerationOptions): Promise<st
   }
 
   if (result.status === 'failed') {
-    throw new Error(result.error || 'Generation failed');
+    const errorMsg = (result as any).error ? String((result as any).error) : 'Generation failed';
+    throw new Error(errorMsg);
   }
 
   return result.output?.[0] as string;
@@ -72,7 +73,8 @@ export async function generateVocals(audioUrl: string, lyrics: string, style: st
   }
 
   if (result.status === 'failed') {
-    throw new Error(result.error || 'Vocal generation failed');
+    const errorMsg = (result as any).error ? String((result as any).error) : 'Vocal generation failed';
+    throw new Error(errorMsg);
   }
 
   return result.output?.[0] as string;
@@ -101,7 +103,8 @@ export async function separateStems(audioUrl: string): Promise<{
   }
 
   if (result.status === 'failed') {
-    throw new Error(result.error || 'Stem separation failed');
+    const errorMsg = (result as any).error ? String((result as any).error) : 'Stem separation failed';
+    throw new Error(errorMsg);
   }
 
   // Demucs returns separate audio files

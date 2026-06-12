@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { GenerationRequest, GenerationJob, Track } from '@/types';
+import { GenerationRequest, GenerationJob, Track } from '../types';
 
 interface GenerationState {
   // Current generation

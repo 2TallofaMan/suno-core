@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { ChatMessage } from '@/types';
+import { ChatMessage } from '../types';
 
 interface ChatState {
   messages: ChatMessage[];

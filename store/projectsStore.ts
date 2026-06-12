@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Project, Track } from '@/types';
+import { Project, Track } from '../types';
 
 interface ProjectsState {
   projects: Project[];
@@ -13,6 +13,7 @@ interface ProjectsState {
   setCurrentProject: (id: string | null) => void;
   addTrackToProject: (projectId: string, track: Track) => void;
   removeTrackFromProject: (projectId: string, trackId: string) => void;
+  addTrackToCurrentProject: (track: Track) => void;
 }
 
 export const useProjectsStore = create<ProjectsState>()(
@@ -52,6 +53,17 @@ export const useProjectsStore = create<ProjectsState>()(
             : p
         ),
       })),
+
+      addTrackToCurrentProject: (track: Track) => set((state) => {
+        if (!state.currentProjectId) return state;
+        return {
+          projects: state.projects.map((p) =>
+            p.id === state.currentProjectId
+              ? { ...p, tracks: [...p.tracks, track] }
+              : p
+          ),
+        };
+      }),
     }),
     {
       name: 'suno-projects-storage',
