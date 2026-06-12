@@ -1,4 +1,5 @@
 import Replicate from 'replicate';
+import { recordGeneration } from './usageTracker';
 
 // Initialize Replicate client
 const replicate = new Replicate({
@@ -50,7 +51,15 @@ export async function generateMusic(options: MusicGenerationOptions): Promise<st
     throw new Error(errorMsg);
   }
 
-  return result.output?.[0] as string;
+  // Track usage
+  const output = result.output?.[0] as string;
+  recordGeneration('music', {
+    model: options.model || 'medium',
+    duration: options.duration || 30,
+    prompt: options.prompt,
+  });
+
+  return output;
 }
 
 // Generate vocals
@@ -77,7 +86,15 @@ export async function generateVocals(audioUrl: string, lyrics: string, style: st
     throw new Error(errorMsg);
   }
 
-  return result.output?.[0] as string;
+  // Track usage
+  const output = result.output?.[0] as string;
+  recordGeneration('vocals', {
+    model: VOCAL_MODEL,
+    duration: 0, // Vocals don't have duration in the same way
+    prompt: `Vocals: ${lyrics.substring(0, 100)}...`,
+  });
+
+  return output;
 }
 
 // Separate stems
@@ -106,6 +123,13 @@ export async function separateStems(audioUrl: string): Promise<{
     const errorMsg = (result as any).error ? String((result as any).error) : 'Stem separation failed';
     throw new Error(errorMsg);
   }
+
+  // Track usage
+  recordGeneration('stems', {
+    model: DEMUCS_MODEL,
+    duration: 0,
+    prompt: 'Stem separation',
+  });
 
   // Demucs returns separate audio files
   return {

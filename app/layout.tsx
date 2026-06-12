@@ -22,7 +22,7 @@ export default function RootLayout({
         <EnsureDefaultProject />
         <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
           <div className="max-w-4xl mx-auto flex gap-4">
-            <Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition">
+            <Link href="/create" className="hover:text-blue-600 dark:hover:text-blue-400 transition">
               Create
             </Link>
             <Link href="/library" className="hover:text-blue-600 dark:hover:text-blue-400 transition">
@@ -30,6 +30,9 @@ export default function RootLayout({
             </Link>
             <Link href="/chat" className="hover:text-blue-600 dark:hover:text-blue-400 transition">
               Chat
+            </Link>
+            <Link href="/usage" className="hover:text-blue-600 dark:hover:text-blue-400 transition">
+              Usage
             </Link>
           </div>
         </nav>

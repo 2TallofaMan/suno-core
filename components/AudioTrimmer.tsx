@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { trimAudio, formatDuration, getAudioDuration } from '../lib/audioUtils';
+import { recordGeneration } from '../lib/usageTracker';
 
 interface AudioTrimmerProps {
   audioUrl: string;
@@ -96,6 +97,14 @@ export default function AudioTrimmer({ audioUrl, onTrimComplete, onCancel }: Aud
     
     try {
       const trimmedUrl = await trimAudio(audioUrl, startTime, endTime);
+      
+      // Track the trim operation
+      recordGeneration('trim', {
+        model: 'client-side',
+        duration: Math.round((endTime - startTime) * 10) / 10,
+        prompt: `Trim: ${startTime}s to ${endTime}s`,
+      });
+      
       onTrimComplete(trimmedUrl, startTime, endTime);
     } catch (err: any) {
       setError(err.message || 'Trimming failed');
